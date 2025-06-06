@@ -13,6 +13,19 @@ export interface Post {
   description: string;
   date: string;
   content: string;
+  author?: string;
+  tags?: string[];
+  category?: string;
+  wordCount?: number;
+  url?: string;
+}
+
+export async function getDatabaseStructure() {
+  const database = await notion.databases.retrieve({
+    database_id: process.env.NOTION_DATABASE_ID!,
+  });
+  console.log("Database properties:", database.properties);
+  return database;
 }
 
 export async function fetchPublishedPosts() {
@@ -30,7 +43,7 @@ export async function fetchPublishedPosts() {
     },
     sorts: [
       {
-        property: "Date",
+        property: "Published Date",
         direction: "descending",
       },
     ],
@@ -45,28 +58,37 @@ export async function getPost(pageId: string): Promise<Post | null> {
       page_id: pageId,
     })) as PageObjectResponse;
     const mdBlocks = await n2m.pageToMarkdown(pageId);
-    const mdString = n2m.toMarkdownString(mdBlocks);
+    const mdStringResult = n2m.toMarkdownString(mdBlocks);
+    const contentString = mdStringResult.toString();
 
-    // @ts-ignore - We know these properties exist in our Notion database
-    const title = page.properties.Title.title[0].plain_text;
-    // @ts-ignore
-    const date = page.properties.Date.date.start;
-    // @ts-ignore
-    const description = page.properties.Description.rich_text[0].plain_text;
+    // Get first paragraph for description (excluding empty lines)
+    const paragraphs = contentString
+      .split("\n")
+      .filter((line: string) => line.trim().length > 0);
+    const firstParagraph = paragraphs[0] || "";
+    const description =
+      firstParagraph.slice(0, 160) + (firstParagraph.length > 160 ? "..." : "");
 
+    const properties = page.properties as any;
     const post: Post = {
       id: page.id,
-      title,
-      slug: title.toLowerCase().replace(/ /g, "-"),
-      coverImage:
-        page.cover?.type === "external"
-          ? page.cover.external.url
-          : page.cover?.type === "file"
-          ? page.cover.file.url
-          : undefined,
+      title: properties.Title.title[0]?.plain_text || "Untitled",
+      slug:
+        properties.Title.title[0]?.plain_text
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-") // Replace any non-alphanumeric chars with dash
+          .replace(/^-+|-+$/g, "") || // Remove leading/trailing dashes
+        "untitled",
+      coverImage: properties["Featured Image"]?.url || undefined,
       description,
-      date,
-      content: mdString,
+      date:
+        properties["Published Date"]?.date?.start || new Date().toISOString(),
+      content: contentString,
+      author: properties.Author?.people[0]?.name,
+      tags: properties.Tags?.multi_select?.map((tag: any) => tag.name) || [],
+      category: properties.Category?.select?.name,
+      wordCount: properties["Word Count"]?.number,
+      url: properties.URL?.url,
     };
 
     return post;

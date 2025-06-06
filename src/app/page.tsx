@@ -12,6 +12,8 @@ async function getPosts(): Promise<Post[]> {
 export default async function Home() {
   const posts = await getPosts();
 
+  console.log(posts, "posts");
+
   return (
     <div>
       <div className="max-w-2xl mx-auto text-center mb-12">
