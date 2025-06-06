@@ -4,21 +4,22 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import ReactMarkdown from "react-markdown";
+import { ResolvingMetadata } from "next";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 interface PostPageProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 }
 
-export async function generateMetadata({
-  params,
-}: PostPageProps): Promise<Metadata> {
-  const { slug } = params;
+export async function generateMetadata(
+  { params }: PostPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { slug } = await params;
   const posts = await fetchPublishedPosts();
-  const post = await Promise.all(posts.results.map((p) => getPost(p.id))).then(
-    (posts) => posts.find((p) => p?.slug === slug)
-  );
+  const allPosts = await Promise.all(posts.results.map((p) => getPost(p.id)));
+  const post = allPosts.find((p) => p?.slug === slug);
 
   if (!post) {
     return {
@@ -33,11 +34,10 @@ export async function generateMetadata({
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const { slug } = params;
+  const { slug } = await params;
   const posts = await fetchPublishedPosts();
-  const post = await Promise.all(posts.results.map((p) => getPost(p.id))).then(
-    (posts) => posts.find((p) => p?.slug === slug)
-  );
+  const allPosts = await Promise.all(posts.results.map((p) => getPost(p.id)));
+  const post = allPosts.find((p) => p?.slug === slug);
 
   if (!post) {
     notFound();
@@ -58,7 +58,7 @@ export default async function PostPage({ params }: PostPageProps) {
       )}
 
       <header className="mb-8">
-        <div className="flex items-center gap-4 text-gray-500 mb-4">
+        <div className="flex items-center gap-4 text-muted-foreground mb-4">
           <time>{format(new Date(post.date), "MMMM d, yyyy")}</time>
           {post.author && <span>By {post.author}</span>}
           {post.wordCount && (
@@ -66,42 +66,39 @@ export default async function PostPage({ params }: PostPageProps) {
           )}
         </div>
 
-        <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
+        <h1 className="text-4xl font-bold mb-4 text-foreground">
+          {post.title}
+        </h1>
 
         <div className="flex gap-4 mb-4">
-          {post.category && (
-            <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
-              {post.category}
-            </span>
-          )}
+          {post.category && <Badge variant="secondary">{post.category}</Badge>}
           {post.tags &&
             post.tags.map((tag) => (
-              <span
-                key={tag}
-                className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm"
-              >
+              <Badge key={tag} variant="outline">
                 {tag}
-              </span>
+              </Badge>
             ))}
         </div>
 
-        <p className="text-xl text-gray-600">{post.description}</p>
+        <p className="text-xl text-muted-foreground">{post.description}</p>
       </header>
 
-      <div className="prose prose-lg max-w-none">
+      <div className="prose prose-lg dark:prose-invert max-w-none">
         <ReactMarkdown>{post.content}</ReactMarkdown>
       </div>
 
       {post.url && (
         <div className="mt-8 pt-8 border-t">
-          <a
-            href={post.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 hover:underline"
-          >
-            Read original article →
-          </a>
+          <Button variant="outline" asChild>
+            <a
+              href={post.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground hover:no-underline"
+            >
+              Read original article →
+            </a>
+          </Button>
         </div>
       )}
     </article>

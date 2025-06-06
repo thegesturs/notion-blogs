@@ -1,5 +1,5 @@
 import { fetchPublishedPosts, getPost, Post } from "@/lib/notion";
-import PostCard from "@/components/PostCard";
+import PostCard from "@/components/post-card";
 
 async function getPosts(): Promise<Post[]> {
   const posts = await fetchPublishedPosts();
@@ -17,10 +17,10 @@ export default async function Home() {
   return (
     <div>
       <div className="max-w-2xl mx-auto text-center mb-12">
-        <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl mb-4">
+        <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl mb-4">
           Welcome to My Blog
         </h1>
-        <p className="text-lg text-gray-600">
+        <p className="text-lg text-muted-foreground">
           Discover interesting articles and insights
         </p>
       </div>
