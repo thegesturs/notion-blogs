@@ -1,4 +1,4 @@
-import { fetchPublishedPosts, getPost } from "@/lib/notion";
+import { fetchPublishedPosts, getPost, getWordCount } from "@/lib/notion";
 import { format } from "date-fns";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -6,7 +6,7 @@ import { Metadata } from "next";
 import ReactMarkdown from "react-markdown";
 import { ResolvingMetadata } from "next";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { calculateReadingTime } from "@/lib/utils";
 
 interface PostPageProps {
   params: Promise<{ slug: string }>;
@@ -38,6 +38,7 @@ export default async function PostPage({ params }: PostPageProps) {
   const posts = await fetchPublishedPosts();
   const allPosts = await Promise.all(posts.results.map((p) => getPost(p.id)));
   const post = allPosts.find((p) => p?.slug === slug);
+  const wordCount = post?.content ? getWordCount(post.content) : 0;
 
   if (!post) {
     notFound();
@@ -61,9 +62,8 @@ export default async function PostPage({ params }: PostPageProps) {
         <div className="flex items-center gap-4 text-muted-foreground mb-4">
           <time>{format(new Date(post.date), "MMMM d, yyyy")}</time>
           {post.author && <span>By {post.author}</span>}
-          {post.wordCount && (
-            <span>{post.wordCount.toLocaleString()} words</span>
-          )}
+          <span>{calculateReadingTime(wordCount)}</span>
+          <span>{wordCount} words</span>
         </div>
 
         <h1 className="text-4xl font-bold mb-4 text-foreground">
@@ -86,21 +86,6 @@ export default async function PostPage({ params }: PostPageProps) {
       <div className="prose prose-lg dark:prose-invert max-w-none">
         <ReactMarkdown>{post.content}</ReactMarkdown>
       </div>
-
-      {post.url && (
-        <div className="mt-8 pt-8 border-t">
-          <Button variant="outline" asChild>
-            <a
-              href={post.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground hover:no-underline"
-            >
-              Read original article →
-            </a>
-          </Button>
-        </div>
-      )}
     </article>
   );
 }

@@ -16,16 +16,21 @@ export interface Post {
   author?: string;
   tags?: string[];
   category?: string;
-  wordCount?: number;
-  url?: string;
 }
 
 export async function getDatabaseStructure() {
   const database = await notion.databases.retrieve({
     database_id: process.env.NOTION_DATABASE_ID!,
   });
-  console.log("Database properties:", database.properties);
   return database;
+}
+
+export function getWordCount(content: string): number {
+  const cleanText = content
+    .replace(/[^\w\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return cleanText.split(" ").length;
 }
 
 export async function fetchPublishedPosts() {
@@ -86,8 +91,6 @@ export async function getPost(pageId: string): Promise<Post | null> {
       author: properties.Author?.people[0]?.name,
       tags: properties.Tags?.multi_select?.map((tag: any) => tag.name) || [],
       category: properties.Category?.select?.name,
-      wordCount: properties["Word Count"]?.number,
-      url: properties.URL?.url,
     };
 
     return post;
