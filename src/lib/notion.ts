@@ -58,8 +58,7 @@ export async function getPost(pageId: string): Promise<Post | null> {
       page_id: pageId,
     })) as PageObjectResponse;
     const mdBlocks = await n2m.pageToMarkdown(pageId);
-    const mdStringResult = n2m.toMarkdownString(mdBlocks);
-    const contentString = mdStringResult.toString();
+    const { parent: contentString } = n2m.toMarkdownString(mdBlocks);
 
     // Get first paragraph for description (excluding empty lines)
     const paragraphs = contentString
