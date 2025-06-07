@@ -7,6 +7,9 @@ import ReactMarkdown from "react-markdown";
 import { ResolvingMetadata } from "next";
 import { Badge } from "@/components/ui/badge";
 import { calculateReadingTime } from "@/lib/utils";
+import { components } from "@/components/mdx-component";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
 
 interface PostPageProps {
   params: Promise<{ slug: string }>;
@@ -40,12 +43,14 @@ export default async function PostPage({ params }: PostPageProps) {
   const post = allPosts.find((p) => p?.slug === slug);
   const wordCount = post?.content ? getWordCount(post.content) : 0;
 
+  console.log(post?.content);
+
   if (!post) {
     notFound();
   }
 
   return (
-    <article className="max-w-3xl mx-auto">
+    <article className="max-w-3xl mx-auto prose dark:prose-invert">
       {post.coverImage && (
         <div className="relative aspect-video w-full mb-8 rounded-lg overflow-hidden">
           <Image
@@ -79,12 +84,16 @@ export default async function PostPage({ params }: PostPageProps) {
               </Badge>
             ))}
         </div>
-
-        <p className="text-xl text-muted-foreground">{post.description}</p>
       </header>
 
-      <div className="prose prose-lg dark:prose-invert max-w-none">
-        <ReactMarkdown>{post.content}</ReactMarkdown>
+      <div className="max-w-none">
+        <ReactMarkdown
+          components={components}
+          remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeRaw]}
+        >
+          {post.content}
+        </ReactMarkdown>
       </div>
     </article>
   );
