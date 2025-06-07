@@ -59,7 +59,7 @@ const components = {
         {String(children).replace(/\n$/, "")}
       </SyntaxHighlighter>
     ) : (
-      <Badge variant="secondary" className="font-mono rounded-md text-sm">
+      <Badge variant="pre" className="font-mono rounded-md text-sm">
         {children}
       </Badge>
     );
@@ -102,19 +102,27 @@ const components = {
     <Table className="rounded-md">{children}</Table>
   ),
   thead: ({ children }: { children?: React.ReactNode }) => (
-    <TableHeader>{children}</TableHeader>
+    <TableHeader className="bg-muted first:rounded-t-md">
+      {children}
+    </TableHeader>
   ),
   tbody: ({ children }: { children?: React.ReactNode }) => (
-    <TableBody>{children}</TableBody>
+    <TableBody className="[&>tr:nth-child(even)]:bg-muted/50">
+      {children}
+    </TableBody>
   ),
   tr: ({ children }: { children?: React.ReactNode }) => (
-    <TableRow>{children}</TableRow>
+    <TableRow className="border-border group">{children}</TableRow>
   ),
   td: ({ children }: { children?: React.ReactNode }) => (
-    <TableCell>{children}</TableCell>
+    <TableCell className="border-r border-border last:border-r-0 group-last:first:rounded-bl-md group-last:last:rounded-br-md">
+      {children}
+    </TableCell>
   ),
   th: ({ children }: { children?: React.ReactNode }) => (
-    <TableHead className="bg-muted">{children}</TableHead>
+    <TableHead className="font-bold  border-r border-border last:border-r-0 first:rounded-tl-md last:rounded-tr-md">
+      {children}
+    </TableHead>
   ),
 };
 
