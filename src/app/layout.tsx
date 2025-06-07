@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     siteName: "Gesturs",
     images: [
       {
-        url: `${siteUrl}/og-image.png`,
+        url: `${siteUrl}/opengraph-image.png`,
         width: 1200,
         height: 630,
         alt: "Gesturs - The Notion Blog",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Gesturs - The Notion Blog",
     description: "A blog built with Next.js and Notion",
-    images: [`${siteUrl}/og-image.png`],
+    images: [`${siteUrl}/opengraph-image.png`],
   },
   robots: {
     index: true,
