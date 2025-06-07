@@ -53,7 +53,7 @@ A modern, fast, and customizable blog template powered by Notion as a CMS and Ne
 2. Copy the ID from the URL. For example:
    ```
    https://www.notion.so/20bf471a8ac78080a3d4dad6ed77ca17?v=...
-                      └─────────── Database ID ───────────┘
+                        └───────── Database ID ─────────┘
    ```
 
 ### 5. Environment Setup
