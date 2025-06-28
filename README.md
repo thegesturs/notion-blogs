@@ -1,6 +1,6 @@
 # Šablona blogu Next.js poháněná pojmy
 
-Moderní, rychlá a přizpůsobitelná šablona blogu poháněná Notion jako CMS a Next.js. Tato šablona umožňuje používat Notion jako systém pro správu obsahu a zároveň obsluhovat blog pomocí Next.js.
+Moderní, rychlá a přizpůsobitelná šablona blogu poháněná Notion jako CMS a Next.js. Tato šablona umožňuje používat Notion jako systém pro správu obsahu blogu a zároveň obsluhovat blog pomocí Next.js.
 
 ## Vlastnosti
 
