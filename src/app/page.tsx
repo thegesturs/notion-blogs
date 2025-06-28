@@ -1,5 +1,5 @@
 import { fetchPublishedPosts, getPost, Post } from "@/lib/notion";
-import PostCard from "@/components/post-card";
+import { HoverEffect } from "@/components/ui/card-hover-effect";
 
 async function getPosts(): Promise<Post[]> {
   const posts = await fetchPublishedPosts();
@@ -12,6 +12,12 @@ async function getPosts(): Promise<Post[]> {
 export default async function Home() {
   const posts = await getPosts();
 
+  const formattedPosts = posts.map((post) => ({
+    title: post.title,
+    description: post.description,
+    link: `/posts/${post.slug}`,
+  }));
+
   return (
     <div>
       <div className="max-w-2xl mx-auto text-center mb-12">
@@ -23,10 +29,8 @@ export default async function Home() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
-        ))}
+      <div className="max-w-5xl mx-auto">
+        <HoverEffect items={formattedPosts} />
       </div>
     </div>
   );

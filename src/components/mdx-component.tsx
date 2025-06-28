@@ -21,7 +21,7 @@ const components = {
     <p className="mb-4">{children}</p>
   ),
   a: ({ children, href }: { children?: React.ReactNode; href?: string }) => (
-    <a href={href} className="text-blue-500">
+    <a href={href} className="text-blue-500 hover:text-blue-700 underline">
       {children}
     </a>
   ),
@@ -59,7 +59,7 @@ const components = {
         {String(children).replace(/\n$/, "")}
       </SyntaxHighlighter>
     ) : (
-      <Badge variant="pre" className="font-mono rounded-md text-sm">
+      <Badge variant="secondary" className="font-mono rounded-md text-sm px-1 py-0.5">
         {children}
       </Badge>
     );
@@ -120,7 +120,7 @@ const components = {
     </TableCell>
   ),
   th: ({ children }: { children?: React.ReactNode }) => (
-    <TableHead className="font-bold  border-r border-border last:border-r-0 first:rounded-tl-md last:rounded-tr-md">
+    <TableHead className="font-bold border-r border-border last:border-r-0 first:rounded-tl-md last:rounded-tr-md">
       {children}
     </TableHead>
   ),

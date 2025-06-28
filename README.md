@@ -1,138 +1,139 @@
-# Notion-Powered Next.js Blog Template
+# Šablona blogu Next.js poháněná pojmy
 
-A modern, fast, and customizable blog template powered by Notion as a CMS and Next.js. This template allows you to use Notion as your content management system while serving your blog with Next.js.
+Moderní, rychlá a přizpůsobitelná šablona blogu poháněná Notion jako CMS a Next.js. Tato šablona umožňuje používat Notion jako systém pro správu obsahu a zároveň obsluhovat blog pomocí Next.js.
 
-## Features
+## Vlastnosti
 
-- 🚀 Built with Next.js 14+ and App Router
-- 📝 Use Notion as a CMS
-- 🎨 Beautiful and responsive design
-- ⚡ Fast page loads with static generation
-- 🔍 SEO optimized
-- 📱 Mobile-friendly
-- 🌙 Dark mode support
-- ✨ Syntax highlighting for code blocks
-- 📊 Table support
-- 🖼️ Image optimization
-- 📅 Reading time and word count
+- 🚀 Vytvořeno s Next.js 14+ a App Routerem
+- 📝 Používejte Notion jako CMS
+- 🎨 Krásný a responzivní design
+- ⚡ Rychlé načítání stránek díky statickému generování
+- 🔍 SEO optimalizované
+- 📱 Přátelský pro mobilní zařízení
+- 🌙 Podpora tmavého režimu
+- ✨ Zvýraznění syntaxe pro bloky kódu
+- 📊 Podpora tabulek
+- 🖼️ Optimalizace obrázků
+- 📅 Doba čtení a počet slov
 
-## Prerequisites
+## Předpoklady
 
-- Node.js 18.17.1 or later
-- A Notion account
-- Basic knowledge of Next.js and React
+- Node.js 18.17.1 nebo novější
+- Účet Notion
+- Základní znalosti Next.js a React
 
-## Getting Started
+## Začínáme
 
-### 1. Clone the Template
+### 1. Klonování šablony
 
-1. Visit this Notion template: [Blog Template](https://exclusive-gatsby-850.notion.site/20a186dad999800dbb94f239f907215d?v=20a186dad99980228480000c8707478c&source=github)
-2. Click "Duplicate" to clone it to your workspace
-3. Clone this repository to your local machine
+1. Navštivte tuto šablonu Notion: [Blog Template](https://exclusive-gatsby-850.notion.site/20a186dad999800dbb94f239f907215d?v=20a186dad99980228480000c8707478c&source=github)
+2. Kliknutím na tlačítko "Duplikovat" ji naklonujte do svého pracovního prostoru.
+3. Klonujte tento repozitář do svého lokálního počítače
 
-### 2. Set Up Notion Integration
+### 2. Nastavte integraci Notion
 
-1. Go to [Notion Developers](https://www.notion.so/my-integrations)
-2. Click "New integration"
-3. Fill in the integration details:
-   - Name: Choose a name for your integration
-   - Select the workspace where you cloned the blog template
-   - Choose "Internal integration"
-4. Under "Capabilities", select only "Read content" (uncheck Insert content and Update content)
-5. Copy the "Internal Integration Token" (this will be your `NOTION_TOKEN`)
+1. Přejděte do [Notion Developers](https://www.notion.so/my-integrations)
+2. Klikněte na "Nová integrace".
+3. Vyplňte údaje o integraci:
+   - Vyplňte následující údaje: Název: Zvolte název integrace
+   - Vyberte pracovní prostor, do kterého jste naklonovali šablonu blogu
+   - Vyberte možnost "Interní integrace"
+4. V části "Schopnosti" vyberte pouze možnost "Číst obsah" (zrušte zaškrtnutí políček Vložit obsah a Aktualizovat obsah).
+5. Zkopírujte "Interní integrační token" (bude to váš `NOTION_TOKEN`).
 
-### 3. Connect Integration to Your Database
+### 3. Připojte integraci k vaší databázi
 
-1. Go to your cloned Notion blog page
-2. Click the "•••" (three dots) in the top right corner
-3. Go to "Connections" -> find your integration and click "Connect"
+1. Přejděte na svou klonovanou stránku blogu Notion
+2. Klikněte na "---" (tři tečky) v pravém horním rohu.
+3. Přejděte na "Připojení" -> najděte svou integraci a klikněte na "Připojit".
 
-### 4. Get Your Database ID
+### 4. Získejte ID vaší databáze
 
-1. Open your Notion database in the browser
-2. Copy the ID from the URL. For example:
+1. Otevřete databázi Notion v prohlížeči
+2. Zkopírujte ID z adresy URL. Například:
    ```
    https://www.notion.so/20bf471a8ac78080a3d4dad6ed77ca17?v=...
-                        └───────── Database ID ─────────┘
+                        └───────── ID databáze ─────────┘
    ```
 
-### 5. Environment Setup
+### 5. Nastavení prostředí
 
-1. Create a `.env.local` file in your project root:
+1. V kořenovém adresáři projektu vytvořte soubor `.env.local`:
    ```env
-   NOTION_TOKEN=your_integration_token_here
-   NOTION_DATABASE_ID=your_database_id_here
-   NEXT_PUBLIC_SITE_URL=your_site_url_here
+   NOTION_TOKEN=vaš_integrační_token_zde
+   NOTION_DATABASE_ID=vaše_databáze_id_zde
+   NEXT_PUBLIC_SITE_URL=vaše_site_url_here
    ```
 
-### 6. Install and Run
+### 6. Nainstalujte a spusťte
 
-```bash
+````
+bash
 npm install
 npm run dev
 ```
 
-Visit `http://localhost:3000` to see your blog.
+Navštivte `http://localhost:3000` a prohlédněte si svůj blog.
 
-## Customizing the Template
+## Přizpůsobení šablony
 
-### Adding New Properties
+### Přidání nových vlastností
 
-1. In your Notion database, you can add new properties by clicking "+ Add a property"
-2. To use new properties in your blog, modify `src/lib/notion.ts`:
+1. V databázi Notion můžete přidávat nové vlastnosti kliknutím na tlačítko "+ Přidat vlastnost".
+2. Chcete-li ve svém blogu použít nové vlastnosti, upravte soubor `src/lib/notion.ts`:
 
 ```typescript
-export interface Post {
-  // ... existing properties ...
-  yourNewProperty?: string; // Add your new property
+export rozhraní Post {
+  // ... stávající vlastnosti ...
+  yourNewProperty?: string; // Přidejte novou vlastnost
 }
 
 export async function getPost(pageId: string): Promise<Post | null> {
   try {
-    // ... existing code ...
+    // ... stávající kód ...
     const post: Post = {
-      // ... existing properties ...
+      // ... stávající vlastnosti ...
       yourNewProperty: properties.YourNewProperty?.your_property_type?.value,
     };
-    // ... rest of the code ...
+    // ... zbytek kódu ...
   }
 }
 ```
 
-### Customizing the Layout
+### Přizpůsobení rozvržení
 
-- Modify `src/app/posts/[slug]/page.tsx` to change the blog post layout
-- Update `src/components/mdx-component.tsx` to customize markdown rendering
-- Style components using Tailwind CSS classes
+- Upravte soubor `src/app/posts/[slug]/page.tsx`, abyste změnili rozvržení příspěvku na blogu.
+- Aktualizujte soubor `src/components/mdx-component.tsx`, abyste přizpůsobili vykreslování markdownů
+- Stylování komponent pomocí tříd CSS Tailwindu
 
-### Managing Your Blog
+### Správa blogu
 
-1. Access your integration settings anytime:
-   - Go to Notion Settings -> Connections
-   - Find your integration
-   - Click "•••" -> "Manage in developer portal"
+1. Kdykoli získáte přístup k nastavení integrace:
+   - Přejděte do Nastavení Notion -> Připojení
+   - Najděte svou integraci
+   - Klikněte na "---" -> "Spravovat na portálu pro vývojáře".
 
-2. Create new blog posts:
-   - Add a new page to your Notion database
-   - Fill in the required properties
-   - Set status to "Published" when ready
+2. Vytvořte nové příspěvky na blogu:
+   - Přidejte novou stránku do databáze Notion
+   - Vyplňte požadované vlastnosti
+   - Po dokončení nastavte stav na "Zveřejněno"
 
-## Database Properties
+## Vlastnosti databáze
 
-The template uses these default properties:
+Šablona používá tyto výchozí vlastnosti:
 
-- `Title` - The post title (required)
-- `Status` - Publication status (Published/Draft)
-- `Published Date` - Post publication date
-- `Author` - Post author
-- `Tags` - Post tags (multi-select)
-- `Category` - Post category (select)
-- `Featured Image` - Cover image URL
+- Název příspěvku (povinné)
+- `Status` - Stav publikace (Zveřejněno/návrh)
+- `Published Date` - Datum zveřejnění příspěvku
+- `Author` - Autor příspěvku
+- `Tags` - Značky příspěvku (možnost výběru z více možností)
+- `Category` - Kategorie příspěvku (vyberte)
+- `Featured Image` - URL adresa titulního obrázku
 
-## Contributing
+## Přispívání
 
-Feel free to submit issues and enhancement requests!
+Neváhejte zasílat problémy a požadavky na vylepšení!
 
-## License
+## Licence
 
-MIT License - feel free to use this template for your own blog!
+Licence MIT - neváhejte použít tuto šablonu pro svůj vlastní blog!

@@ -1,10 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Raleway, Space_Mono, Open_Sans } from "next/font/google";
 import "./globals.css";
 import Layout from "@/components/layout";
 import { ThemeProvider } from "@/components/theme-provider";
+import { cn } from "@/lib/utils";
 
-const inter = Inter({ subsets: ["latin"] });
+const fontSans = Raleway({
+  subsets: ["latin"],
+  variable: "--font-raleway",
+});
+
+const fontMono = Space_Mono({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-space-mono",
+});
+
+const fontAlt = Open_Sans({
+  subsets: ["latin"],
+  variable: "--font-open-sans",
+});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://your-site.com";
 
@@ -70,7 +85,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          fontSans.variable,
+          fontMono.variable,
+          fontAlt.variable
+        )}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
