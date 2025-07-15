@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "npm run cache:posts && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cache:posts": "tsx scripts/cache-posts.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -26,6 +27,8 @@
     "@radix-ui/react-tabs": "^1.1.12",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@types/react-syntax-highlighter": "^15.5.13",
+    "@vercel/analytics": "^1.5.0",
+    "@vercel/speed-insights": "^1.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
@@ -52,7 +55,7 @@
     "@types/react-dom": "^19",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.4",
+    "tsx": "^4.7.2",
     "typescript": "^5"
-  },
-  "packageManager": "pnpm@10.11.0"
+  }
 }

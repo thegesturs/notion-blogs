@@ -1,16 +1,8 @@
-import { fetchPublishedPosts, getPost, Post } from "@/lib/notion";
+import { getPostsFromCache, Post } from "@/lib/notion";
 import PostCard from "@/components/post-card";
 
-async function getPosts(): Promise<Post[]> {
-  const posts = await fetchPublishedPosts();
-  const allPosts = await Promise.all(
-    posts.results.map((post) => getPost(post.id))
-  );
-  return allPosts.filter((post): post is Post => post !== null);
-}
-
-export default async function Home() {
-  const posts = await getPosts();
+export default function Home() {
+  const posts = getPostsFromCache();
 
   return (
     <div>
