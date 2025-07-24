@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "npm run cache:posts && next build",
+    "dev": "pnpm run cache:posts && next dev --turbopack",
+    "build": "pnpm run cache:posts && next build",
     "start": "next start",
     "lint": "next lint",
     "cache:posts": "tsx scripts/cache-posts.ts"
