@@ -1,4 +1,4 @@
-import { fetchPublishedPosts, getPost, getWordCount } from "@/lib/notion";
+import { getPostsFromCache, getWordCount } from "@/lib/notion";
 import { format } from "date-fns";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -20,9 +20,8 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { slug } = await params;
-  const posts = await fetchPublishedPosts();
-  const allPosts = await Promise.all(posts.results.map((p) => getPost(p.id)));
-  const post = allPosts.find((p) => p?.slug === slug);
+  const posts = getPostsFromCache();
+  const post = posts.find((p) => p.slug === slug);
 
   if (!post) {
     return {
@@ -71,9 +70,8 @@ export async function generateMetadata(
 
 export default async function PostPage({ params }: PostPageProps) {
   const { slug } = await params;
-  const posts = await fetchPublishedPosts();
-  const allPosts = await Promise.all(posts.results.map((p) => getPost(p.id)));
-  const post = allPosts.find((p) => p?.slug === slug);
+  const posts = getPostsFromCache();
+  const post = posts.find((p) => p.slug === slug);
   const wordCount = post?.content ? getWordCount(post.content) : 0;
 
   if (!post) {

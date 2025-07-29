@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
+    "dev": "pnpm run cache:posts && next dev --turbopack",
+    "build": "pnpm run cache:posts && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cache:posts": "tsx scripts/cache-posts.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -52,6 +53,7 @@
     "@types/react-dom": "^19",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.4",
+    "tsx": "^4.7.2",
     "typescript": "^5"
   },
   "packageManager": "pnpm@10.11.0"

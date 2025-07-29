@@ -1,6 +1,8 @@
 import { Client } from "@notionhq/client";
 import { NotionToMarkdown } from "notion-to-md";
 import { PageObjectResponse } from "@notionhq/client/";
+import fs from "fs";
+import path from "path";
 
 export const notion = new Client({ auth: process.env.NOTION_TOKEN });
 export const n2m = new NotionToMarkdown({ notionClient: notion });
@@ -33,7 +35,22 @@ export function getWordCount(content: string): number {
   return cleanText.split(" ").length;
 }
 
+export function getPostsFromCache(): Post[] {
+  const cachePath = path.join(process.cwd(), "posts-cache.json");
+  if (fs.existsSync(cachePath)) {
+    try {
+      const cache = fs.readFileSync(cachePath, "utf-8");
+      return JSON.parse(cache);
+    } catch (error) {
+      console.error("Error reading posts cache:", error);
+      return [];
+    }
+  }
+  return [];
+}
+
 export async function fetchPublishedPosts() {
+  // This function is now intended to be used only by the caching script.
   const posts = await notion.databases.query({
     database_id: process.env.NOTION_DATABASE_ID!,
     filter: {
@@ -54,10 +71,16 @@ export async function fetchPublishedPosts() {
     ],
   });
 
-  return posts;
+  return posts.results as PageObjectResponse[];
 }
 
-export async function getPost(pageId: string): Promise<Post | null> {
+export async function getPost(slug: string): Promise<Post | null> {
+  const posts = getPostsFromCache();
+  const post = posts.find((p) => p.slug === slug);
+  return post || null;
+}
+
+export async function getPostFromNotion(pageId: string): Promise<Post | null> {
   try {
     const page = (await notion.pages.retrieve({
       page_id: pageId,
